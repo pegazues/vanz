@@ -1,7 +1,7 @@
 import chalk from 'chalk'
 import { NextResponse } from 'next/server'
 
-export async function GET(request: Request) {
+export async function POST(request: Request) {
   try {
     const url = new URL(request.url)
 
@@ -35,7 +35,7 @@ export async function GET(request: Request) {
     )
     authorizationCodeURL.searchParams.set(
       'redirect_uri',
-      `${process.env.DEPLOYMENT_URL}/api/auth-response`,
+      `http://localhost:3000/api/auth-response`,
     )
 
     const response = await fetch(baseUrl + endpoint, {
