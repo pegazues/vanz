@@ -8,7 +8,7 @@ export async function GET(request: Request) {
 
     const code = url.searchParams.get('code')
     return NextResponse.redirect(
-      `http://localhost:3000/admin/add-account?code=${code}`,
+      `${process.env.DEPLOYMENT_URL}/admin/add-account?code=${code}`,
     )
   } catch (error) {
     return NextResponse.json({
