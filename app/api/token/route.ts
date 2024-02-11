@@ -35,7 +35,7 @@ export async function GET(request: Request) {
     )
     authorizationCodeURL.searchParams.set(
       'redirect_uri',
-      'http://localhost:3000/api/auth-response',
+      `${process.env.DEPLOYMENT_URL}/api/auth-response`,
     )
 
     const response = await fetch(baseUrl + endpoint, {
