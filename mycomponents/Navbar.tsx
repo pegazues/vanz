@@ -8,6 +8,7 @@ import SearchItem from './SearchItem'
 import Notifications from './Notifications'
 import { SessionProvider } from 'next-auth/react'
 import React, { useEffect, useState } from 'react'
+import SelectLanguage from './SelectLanguage'
 
 interface linkProps {
   name: string
@@ -70,6 +71,7 @@ function Navbar({
             (user?.role === 'user' && user?.status === 'accepted')) && (
             <SearchItem />
           )}
+          <SelectLanguage />
           {user?.role === 'admin' && <Notifications />}
           <UserNav />
         </div>

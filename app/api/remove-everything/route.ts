@@ -1,19 +1,18 @@
-import {
-  getGenreMovies,
-  getGenreTV,
-  removeDuplicateEntertainmentItems,
-} from '@/lib/utils'
+import connectDB from '@/lib/mongoose'
 import EntertainmentItem from '@/models/entertainmentItem.model'
 import { NextResponse } from 'next/server'
-export const dynamic = 'force-dynamic'
 
-export async function GET(request: Request) {
+export async function POST() {
   try {
+    await connectDB()
+    await EntertainmentItem.deleteMany()
+
     return NextResponse.json({
       status: 'success',
+      message: 'All items removed!',
     })
   } catch (error) {
-    console.log(error)
+    console.error(error)
     return NextResponse.json({
       status: 'error',
       message: 'Some error occured!',

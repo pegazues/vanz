@@ -1,60 +1,18 @@
-import { Button } from '@/components/ui/button'
-import connectDB from '@/lib/mongoose'
-import { authOptions, doJSON, getUserDetails } from '@/lib/utils'
-import Admin from '@/models/admin.model'
-import EntertainmentItem from '@/models/entertainmentItem.model'
-import User from '@/models/user.model'
-import RecentlyAdded from '@/mycomponents/RecentlyAdded'
+import {
+  authOptions,
+  doJSON,
+  getGenreMovies,
+  getGenreTV,
+  getRandomItem,
+  getRecentMovies,
+  getUserDetails,
+} from '@/lib/utils'
+import GenreCarouselWrapper from '@/mycomponents/GenreCarouselWrapper'
 import RequestAccessButton from '@/mycomponents/RequestAccessButton'
 import Hero from '@/mycomponents/cards/Hero'
 import { CircleSlash, Clock } from 'lucide-react'
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
-
-export type EI = {
-  _id: string
-  title: string
-  parent_folder: string
-  parent_folder_onedrive_id: string
-  onedrive_item_id: string
-  account: string
-  webURL: string
-  onedrive_id: string
-  site_id: string
-  plot_summary: string
-  backdrop_url: string
-  cover_image: string
-  genre: string
-  imdb_id: string
-  rating: number
-  cast: string[]
-}
-
-const getRandomItem = async (): Promise<EI> => {
-  await connectDB()
-  const count = await EntertainmentItem.countDocuments()
-  const random = Math.floor(Math.random() * count)
-
-  const randomItem = await EntertainmentItem.findOne().skip(random)
-  return doJSON(randomItem)
-}
-
-const getGenreMovies = async (
-  genre: string,
-  limit: number = 10,
-): Promise<EI[]> => {
-  await connectDB()
-  const actionMovies = await EntertainmentItem.find({
-    genre: {
-      $regex: genre,
-    },
-  })
-    .sort({
-      rating: -1,
-    })
-    .limit(limit)
-  return doJSON(actionMovies)
-}
 
 export default async function Homepage() {
   const session = await getServerSession(authOptions)
@@ -67,12 +25,8 @@ export default async function Homepage() {
     session?.user?.name || '',
   )
 
-  const item = await getRandomItem()
-  const actionMovies = await getGenreMovies('Action')
-  const romanceMovies = await getGenreMovies('Romance')
-  const thrillerMovies = await getGenreMovies('Thriller')
-  const comedyMovies = await getGenreMovies('Comedy')
-  const familyMovies = await getGenreMovies('Family')
+  const item = await getRandomItem(user?.language || 'en')
+  const recentMovies = await getRecentMovies(user?.language || 'en')
 
   if (user?.role === 'user') {
     if (user.status === 'created') {
@@ -135,31 +89,7 @@ export default async function Homepage() {
     <>
       <Hero item={item} />
       <div className="bg-black max-w-7xl mx-auto">
-        <h2 className="text-white text-3xl font-bold mt-8 max-w-max mx-auto">
-          Action Movies
-        </h2>
-        <RecentlyAdded data={actionMovies} />
-
-        <h2 className="text-white text-3xl font-bold mt-8 max-w-max mx-auto">
-          Romance Movies
-        </h2>
-        <RecentlyAdded data={romanceMovies} />
-
-        <h2 className="text-white text-3xl font-bold mt-8 max-w-max mx-auto">
-          Thriller Movies
-        </h2>
-        <RecentlyAdded data={thrillerMovies} />
-
-        <h2 className="text-white text-3xl font-bold mt-8 max-w-max mx-auto">
-          Comedy Movies
-        </h2>
-        <RecentlyAdded data={comedyMovies} />
-
-        <h2 className="text-white text-3xl font-bold mt-8 max-w-max mx-auto">
-          Family Movies
-        </h2>
-        <RecentlyAdded data={familyMovies} />
-
+        <GenreCarouselWrapper language={user?.language || 'en'} />
         <div className="h-20"></div>
       </div>
     </>

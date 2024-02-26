@@ -14,6 +14,11 @@ const UserSchema = new mongoose.Schema({
     type: String,
     enum: ['requested', 'accepted', 'rejected', 'pending', 'created'],
   },
+  language: {
+    type: String,
+    enum: ['en', 'it'],
+    default: 'en',
+  },
 })
 
 let User: Model<any>

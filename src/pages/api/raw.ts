@@ -5,7 +5,6 @@ import ParentFolder from '@/models/parentFolder.model'
 import { handleError } from '@/utils/errorHandler'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { NextResponse } from 'next/server'
-import axios, { AxiosResponseHeaders } from 'axios'
 
 export default async function handler(
   request: NextApiRequest,

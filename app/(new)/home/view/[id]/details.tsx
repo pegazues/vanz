@@ -111,7 +111,7 @@ const ViewPage = ({ id }: { id: string }) => {
     const fetchEntertainmentItemDetails = async () => {
       try {
         const url = new URL(`/api/entertainment/${id}`, window.location.href)
-        console.log(url.toString())
+
         const response = await fetch(url.toString())
         const data = await response.json()
 

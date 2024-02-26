@@ -1,4 +1,5 @@
 import connectDB from '@/lib/mongoose'
+import { getGenreTV } from '@/lib/utils'
 import EntertainmentItem from '@/models/entertainmentItem.model'
 import { handleError } from '@/utils/errorHandler'
 import { NextResponse } from 'next/server'
@@ -9,23 +10,16 @@ export async function GET(request: Request) {
     await connectDB()
     const url = new URL(request.url)
     const genre = url.searchParams.get('genre') || 'Action'
-    const limit = Number(url.searchParams.get('limit')) || 10
+    const limit = Number(url.searchParams.get('limit')) || 20
+    const language = url.searchParams.get('language') || 'en'
 
-    const actionMovies = await EntertainmentItem.find({
-      genre: {
-        $regex: genre,
-      },
-    })
-      .sort({
-        rating: -1,
-      })
-      .limit(limit)
+    const data = await getGenreTV(genre, language, limit)
 
     return NextResponse.json(
       {
         status: 'success',
-        length: actionMovies.length,
-        actionMovies,
+        data,
+        length: data.length,
       },
       { status: 200 },
     )

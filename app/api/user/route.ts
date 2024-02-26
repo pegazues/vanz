@@ -21,7 +21,6 @@ export async function GET(request: Request) {
       })
 
     const user = await User.findOne({ email: email })
-    console.log({ ...user._doc, role: 'user' })
     if (user)
       return NextResponse.json({
         status: 'success',

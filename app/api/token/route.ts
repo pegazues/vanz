@@ -1,4 +1,3 @@
-import chalk from 'chalk'
 import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
@@ -22,7 +21,6 @@ export async function POST(request: Request) {
 
     const baseUrl = 'https://login.microsoftonline.com'
     const endpoint = '/common/oauth2/v2.0/token'
-
     const authorizationCodeURL = new URL(endpoint, baseUrl)
 
     authorizationCodeURL.searchParams.set('client_id', client_id)

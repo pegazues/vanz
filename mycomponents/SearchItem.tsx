@@ -9,12 +9,13 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
+import { TMDB_IMAGE_DOMAIN } from '@/lib/utils'
 import { Search } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 export default function SearchItem() {
-  const [searchItems, setSearchItems] = useState<EntertainmentItem[]>([])
+  const [searchItems, setSearchItems] = useState<any>([])
   const [searchInput, setSearchInput] = useState<string>('')
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -27,7 +28,8 @@ export default function SearchItem() {
           `/api/entertainment/search?query=${searchInput}`,
         )
         const data = await res.json()
-        setSearchItems(data.data.map((item: any) => item))
+        console.log(data)
+        setSearchItems(data.data)
         setLoading(false)
       }
     }, 300)
@@ -60,7 +62,8 @@ export default function SearchItem() {
           )}
           <div className="flex flex-col mt-6">
             {!loading &&
-              searchItems.map((item: EntertainmentItem, idx) => (
+              searchItems.length > 0 &&
+              searchItems.map((item: any, idx: number) => (
                 <Link
                   href={`/home/view/${item._id}`}
                   key={idx}
@@ -70,7 +73,11 @@ export default function SearchItem() {
                   <div className="flex">
                     <img
                       className="h-20 rounded-lg object-fill"
-                      src={item.cover_image}
+                      src={
+                        item.cover
+                          ? TMDB_IMAGE_DOMAIN + item.cover
+                          : `https://api.dicebear.com/7.x/lorelei/svg?seed=${item.title}&r=50&b=50`
+                      }
                       alt={'oh no'}
                     />
                     <div className="ml-4 flex flex-col justify-between h-full">
@@ -79,7 +86,7 @@ export default function SearchItem() {
                           (item.title.length > 30 ? '...' : '')}
                       </p>
                       <p className="text-yellow-600">{item.rating}</p>
-                      <p className="text-white">{item.genre}</p>
+                      <p className="text-white">{item.genre.join(', ')}</p>
                     </div>
                   </div>
                 </Link>

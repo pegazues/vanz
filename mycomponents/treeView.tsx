@@ -55,7 +55,6 @@ const Item = ({
         className="text-white"
         onClick={() => {
           if (item.children && item.children.length != 0) {
-            // console.log('Toggling children for', item.id)
             toggleShowChildren(item.id)
             return
           }
@@ -73,22 +72,22 @@ const Item = ({
           addChildren(item.id)
         }}
         disabled={
-          (!item.folder || item.folder.childCount == 0) &&
-          !VALID_VIDEO_EXTENSTION.includes(item.name.split('.').pop()!)
+          (!item?.folder || item?.folder?.childCount == 0) &&
+          !VALID_VIDEO_EXTENSTION.includes(item?.name?.split('.').pop()!)
         }
       >
-        {item.folder && item.showChildren && (
+        {item?.folder && item?.showChildren && (
           <Triangle size={14} className="rotate-180 mr-1" />
         )}
-        {item.folder && !item.showChildren && (
+        {item?.folder && !item?.showChildren && (
           <Triangle size={14} className="rotate-90 mr-1" />
         )}
 
-        {item.name}
+        {item?.name}
       </Button>
 
-      {item.showChildren &&
-        item.children?.map((item) => (
+      {item?.showChildren &&
+        item?.children?.map((item) => (
           <Item
             key={item.id}
             id={item.id}

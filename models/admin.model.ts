@@ -10,6 +10,11 @@ const AdminSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  language: {
+    type: String,
+    enum: ['en', 'it'],
+    default: 'en',
+  },
 })
 
 let Admin: Model<any>

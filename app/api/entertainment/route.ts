@@ -1,7 +1,9 @@
 import connectDB from '@/lib/mongoose'
+import { cleanupEntertainmentItems } from '@/lib/utils'
 import EntertainmentItem from '@/models/entertainmentItem.model'
 import ParentFolder from '@/models/parentFolder.model'
 import { handleError } from '@/utils/errorHandler'
+import chalk from 'chalk'
 import { NextResponse } from 'next/server'
 export const dynamic = 'force-dynamic'
 
@@ -20,8 +22,6 @@ export async function GET(request: Request) {
       .skip((page - 1) * limit)
       .limit(limit)
       .select(select.replace(/,/g, ' '))
-    // .populate('parent_folder')
-    // .populate('account')
 
     return NextResponse.json(
       {
@@ -46,13 +46,16 @@ export async function POST(request: Request) {
     const driveData: Object[] = []
 
     for (const folder in folders) {
+      console.log(
+        chalk.yellow(`Processing folder ${folders[folder].folder_name}`),
+      )
       const { account, folder_name, _id } = folders[folder]
 
       const { access_token } = account
 
       const modifiedGraphEndpoint = graphEndpoint.replace(
         '{search-query}',
-        `'${folder_name}'`,
+        `'${encodeURIComponent(folder_name.replace(/'/g, "\\'"))}'`,
       )
 
       const url = new URL(modifiedGraphEndpoint, graphDomain)
@@ -67,6 +70,12 @@ export async function POST(request: Request) {
       })
 
       const data = await graphResponse.json()
+
+      if (!graphResponse.ok) {
+        console.log(chalk.red('Error: '), data)
+        console.log(chalk.blue('Folder: '), folder_name)
+        continue
+      }
 
       if (!data.value.length) {
         continue
@@ -113,6 +122,12 @@ export async function POST(request: Request) {
           }
         })
 
+        console.log(
+          chalk.red(
+            `Found items in ${account.name}: ${entertainmentItems.length}`,
+          ),
+        )
+
         // 3. Store each children as entertainment item in the database
         await EntertainmentItem.insertMany(entertainmentItems)
 
@@ -133,7 +148,16 @@ export async function POST(request: Request) {
 export async function DELETE(req: Request) {
   try {
     await connectDB()
-    await EntertainmentItem.deleteMany()
+
+    // Delete all records in EntertaimentItem
+    // await EntertainmentItem.deleteMany()
+
+    // only keep top 10
+    // const ids = await EntertainmentItem.find().select('_id').limit(10)
+    // await EntertainmentItem.deleteMany({ _id: { $nin: ids } })
+
+    // Delete all records with tmdb_id  = null
+    await cleanupEntertainmentItems()
 
     return Response.json({ message: 'deleted!' }, { status: 200 })
   } catch (error) {

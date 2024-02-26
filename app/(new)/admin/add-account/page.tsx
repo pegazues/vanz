@@ -62,7 +62,9 @@ export default function handler() {
       searchParams.set('client_id', values.client_id)
       searchParams.set('client_secret', values.client_secret)
 
-      const tokenResponse = await fetch(`/api/token?${searchParams}`, {method: "POST"})
+      const tokenResponse = await fetch(`/api/token?${searchParams}`, {
+        method: 'POST',
+      })
 
       if (!tokenResponse.ok) {
         throw new Error('Something went wrong')

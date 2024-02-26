@@ -42,7 +42,6 @@ const Page = () => {
 
   useEffect(() => {
     if (currentItem == '') return
-    console.log('Fetching details of current item : ', currentItem)
 
     const fetchItem = async () => {
       const response = await fetch(`/api/entertainment/${currentItem}`)
@@ -54,7 +53,6 @@ const Page = () => {
     fetchItem()
   }, [currentItem])
 
-  console.log(Object.keys(currentItemFields))
 
   return (
     <div className="flex justify-center items-center text-center">
