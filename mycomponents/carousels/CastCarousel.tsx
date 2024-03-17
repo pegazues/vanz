@@ -67,7 +67,7 @@ export default function CastCarousel({ cast }: { cast: Cast[] }) {
                   width={96}
                   height={96}
                 />
-                <CardDescription className="text-white text-lg font-semibold group-hover:underline group-hover:opacity-80">
+                <CardDescription className="text-white text-md md:text-lg font-semibold group-hover:underline group-hover:opacity-80">
                   {person.name}
                 </CardDescription>
                 <CardDescription>{person.character}</CardDescription>

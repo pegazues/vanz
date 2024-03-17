@@ -39,6 +39,7 @@ export const getUserDetails = async (
   status?: string
   role: string
   language: string
+  _id: string
 } | null> => {
   try {
     if (!email || !name) return null
@@ -271,51 +272,7 @@ export const getItemDetailsWithId = async (
   const { tmdb_id, type } = movie
 
   const movieDetailsResponse = fetch(
-    `${TMDB_DOMAIN}/${type}/${tmdb_id}?language=${language}`,
-    {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${process.env.TMDB_ACCESS_TOKEN_AUTH}`,
-        Accept: 'application/json',
-      },
-    },
-  )
-
-  const movieCastResponse = fetch(
-    `${TMDB_DOMAIN}/${type}/${tmdb_id}/credits?language=${language}`,
-    {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${process.env.TMDB_ACCESS_TOKEN_AUTH}`,
-        Accept: 'application/json',
-      },
-    },
-  )
-
-  const movieImagesResponse = fetch(
-    `${TMDB_DOMAIN}/${type}/${tmdb_id}/images`,
-    {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${process.env.TMDB_ACCESS_TOKEN_AUTH}`,
-        Accept: 'application/json',
-      },
-    },
-  )
-
-  const movieVideosResponse = fetch(
-    `${TMDB_DOMAIN}/${type}/${tmdb_id}/videos`,
-    {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${process.env.TMDB_ACCESS_TOKEN_AUTH}`,
-        Accept: 'application/json',
-      },
-    },
-  )
-
-  const movieReviewsResponse = fetch(
-    `${TMDB_DOMAIN}/${type}/${tmdb_id}/reviews?language=${language}`,
+    `${TMDB_DOMAIN}/${type}/${tmdb_id}?language=${language}&append_to_response=credits,images,videos,reviews`,
     {
       method: 'GET',
       headers: {
@@ -326,38 +283,19 @@ export const getItemDetailsWithId = async (
   )
   // Promise.all all of the above responses with some delays
 
-  const [movieDetails, movieCast, movieImages, movieVideos, movieReviews] =
-    await Promise.all([
-      movieDetailsResponse,
-      movieCastResponse,
-      movieImagesResponse,
-      movieVideosResponse,
-      movieReviewsResponse,
-    ])
+  const [movieDetails] = await Promise.all([movieDetailsResponse])
 
   // Promise.all for json data
-  const [
-    movieData,
-    movieCastData,
-    movieImagesData,
-    movieVideosData,
-    movieReviewsData,
-  ] = await Promise.all([
-    movieDetails.json(),
-    movieCast.json(),
-    movieImages.json(),
-    movieVideos.json(),
-    movieReviews.json(),
-  ])
+  const [movieData] = await Promise.all([movieDetails.json()])
 
   return doJSON({
     database: movie,
     tmdb: movieData,
     type,
-    cast: movieCastData.cast,
-    images: movieImagesData.backdrops,
-    videos: movieVideosData.results,
-    review: [...movieReviewsData.results],
+    cast: movieData.credits.cast,
+    images: movieData.images.backdrops,
+    videos: movieData.videos.results,
+    review: [...movieData.reviews.results],
   })
 }
 
@@ -426,6 +364,27 @@ export const getGenreItemsRQ = async (
 
   // await for 5 seconds
   // await new Promise((resolve) => setTimeout(resolve, 50000))
+
+  return data.data
+}
+
+export const getContinueWatching = async (
+  language: string,
+): Promise<
+  {
+    _id: string
+    user_id: string
+    admin_id: string
+    timestamp: number
+    tmdb_id: string
+    onedrive_item_id: string
+    entertainment_item_id: EI
+    createdAt: Date
+    updatedAt: Date
+  }[]
+> => {
+  const response = await fetch(`/api/entertainment/watch?language=${language}`)
+  const data = await response.json()
 
   return data.data
 }

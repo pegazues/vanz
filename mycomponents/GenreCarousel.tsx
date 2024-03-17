@@ -27,6 +27,7 @@ import {
 } from '@/lib/utils'
 import { useQuery } from '@tanstack/react-query'
 import { Loader } from 'lucide-react'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 export default function GenreCarousel({
   genre,
@@ -57,7 +58,7 @@ export default function GenreCarousel({
     if (!data) Content = <p>No data</p>
     else
       Content = (
-        <Carousel className="max-w-[80%] md:max-w-[90%] lg:max-w-[90%] mx-auto mt-8">
+        <Carousel className="max-w-[70%] md:max-w-[85%] lg:max-w-[87%] mx-auto mt-8">
           <CarouselContent>
             {data.map((movie, index) => {
               const title =
@@ -65,7 +66,7 @@ export default function GenreCarousel({
               return (
                 <CarouselItem
                   key={index}
-                  className="basis-1/3 md:basis-1/4 lg:basis-1/5 hover:cursor-pointer"
+                  className="basis-1/2 md:basis-1/3 lg:basis-1/5 hover:cursor-pointer"
                 >
                   <Dialog>
                     <DialogTrigger asChild>
@@ -81,7 +82,7 @@ export default function GenreCarousel({
                         className="rounded-sm w-full h-full object-cover"
                       />
                     </DialogTrigger>
-                    <DialogContent className="min-w-[80vw] min-h-[80vh] flex-col items-end border-none rounded-none">
+                    <DialogContent className="min-w-[80vw] min-h-[80vh] max-w-[90vw] flex-col items-end border-none rounded-none">
                       <Image
                         src={
                           movie.tmdb.backdrop_path
@@ -100,23 +101,23 @@ export default function GenreCarousel({
                             : movie.tmdb.name}
                         </DialogTitle>
                         <DialogDescription className="text-lg text-zinc-400">
-                          {movie.tmdb.overview}
+                          <ScrollArea className="max-h-[50vh] overflow-y-auto text-left">
+                            {movie.tmdb.overview}
+                          </ScrollArea>
                         </DialogDescription>
-                        <DialogFooter className="">
+                        <DialogFooter className="flex w-full flex-row justify-center gap-2 sm:justify-items-end">
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            className="text-lg p-6"
+                          >
+                            <DialogClose className="flex">Close</DialogClose>
+                          </Button>
                           <Link href={`/home/view/${movie.database._id}`}>
                             <Button className="text-lg p-6 bg-white text-black hover:bg-gray-200">
                               View
                             </Button>
                           </Link>
-                          <DialogClose asChild>
-                            <Button
-                              type="button"
-                              variant="destructive"
-                              className="text-lg p-6"
-                            >
-                              Close
-                            </Button>
-                          </DialogClose>
                         </DialogFooter>
                       </DialogHeader>
                     </DialogContent>
@@ -125,7 +126,7 @@ export default function GenreCarousel({
               )
             })}
           </CarouselContent>
-          <CarouselPrevious variant={'outline'} />
+          <CarouselPrevious />
           <CarouselNext />
         </Carousel>
       )

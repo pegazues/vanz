@@ -344,7 +344,7 @@ function TrailerCarousel({ videos }: { videos: Video[] }) {
         <CarouselContent>
           {videos
             .map((video) => (
-              <CarouselItem key={video.key} className="basis-1/2">
+              <CarouselItem key={video.key} className="sm:basis-1/2">
                 <iframe
                   src={`https://www.youtube.com/embed/${video.key}`}
                   title={video.name}

@@ -2,22 +2,23 @@
 import { useEffect, useState } from 'react'
 import { Loader2 } from 'lucide-react'
 import TreeView from '@/mycomponents/treeView'
+import { EntertainmentItem } from '@/mycomponents/types/entertainmentitem'
 
-export type EntertainmentItem = {
-  _id: string
-  title: string
-  parent_folder: string
-  parent_folder_onedrive_id: string
-  onedrive_item_id: string
-  account: string
-  webURL: string
-  onedrive_id: string
-  site_id: string
-  backdrop_url: string
-  cover_image: string
-  rating: number
-  genre: string
-}
+// export type EntertainmentItem = {
+//   _id: string
+//   title: string
+//   parent_folder: string
+//   parent_folder_onedrive_id: string
+//   onedrive_item_id: string
+//   account: string
+//   webURL: string
+//   onedrive_id: string
+//   site_id: string
+//   backdrop_url: string
+//   cover_image: string
+//   rating: number
+//   genre: string
+// }
 
 export type TreeItem = {
   // Onedrive item id

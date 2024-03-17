@@ -145,6 +145,12 @@ async function updateDetails(
           vote_average,
           type,
           genre: genreAsArray,
+          poster_image: bestMovie.poster_path
+            ? `${TMDB_IMAGE_DOMAIN}${bestMovie.poster_path}`
+            : null,
+          backdrop_image: bestMovie.backdrop_path
+            ? `${TMDB_IMAGE_DOMAIN}${bestMovie.backdrop_path}`
+            : null,
         },
         { new: true },
       )

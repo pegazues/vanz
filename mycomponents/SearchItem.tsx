@@ -1,4 +1,3 @@
-import { EntertainmentItem } from '@/app/(new)/home/view/[id]/details'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import {

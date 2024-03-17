@@ -77,6 +77,12 @@ const EntertainmentItemSchema = new mongoose.Schema({
   type: {
     type: String,
   },
+  backdrop_image: {
+    type: String,
+  },
+  poster_image: {
+    type: String,
+  },
 })
 
 let EntertainmentItem: Model<any>

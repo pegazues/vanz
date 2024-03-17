@@ -38,7 +38,7 @@ export default function SelectLanguage() {
 
   return (
     <Select onValueChange={changeLanguage}>
-      <SelectTrigger className="bg-white outline-none active:outline-none ">
+      <SelectTrigger className="bg-white outline-none active:outline-none">
         <SelectValue
           placeholder={
             !user

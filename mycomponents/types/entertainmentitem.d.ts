@@ -21,4 +21,7 @@ export type EntertainmentItem = {
   vote_count: number
   vote_average: number
   type: string
+
+  poster_image: string
+  backdrop_image: string
 }

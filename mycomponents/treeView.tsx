@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Triangle, TriangleIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { EntertainmentItem } from '@/app/(new)/home/view/[id]/details'
+import { EntertainmentItem } from './types/entertainmentitem'
 
 const VALID_VIDEO_EXTENSTION = ['ogg', 'mp4', 'webm', 'mov', 'mkv']
 
@@ -49,7 +49,7 @@ const Item = ({
   const router = useRouter()
   const item = items[id]
   return (
-    <ul className="ml-4">
+    <ul className="ml-4 overflow-hidden">
       <Button
         variant={'ghost'}
         className="text-white"
@@ -63,7 +63,7 @@ const Item = ({
 
             if (VALID_VIDEO_EXTENSTION.includes(extension!)) {
               router.push(
-                `/play?onedriveItemId=${item.id}&driveId=${entertainmentItem.onedrive_id}&accountId=${entertainmentItem.account}&folderId=${entertainmentItem.parent_folder}&backdrop_url=${entertainmentItem.backdrop_url}`,
+                `/play?onedriveItemId=${item.id}&driveId=${entertainmentItem.onedrive_id}&accountId=${entertainmentItem.account}&folderId=${entertainmentItem.parent_folder}&entertainmentItemId=${entertainmentItem._id}&tmdbId=${entertainmentItem.tmdb_id}`,
               )
             }
             return
@@ -82,8 +82,7 @@ const Item = ({
         {item?.folder && !item?.showChildren && (
           <Triangle size={14} className="rotate-90 mr-1" />
         )}
-
-        {item?.name}
+        <span className="">{item?.name}</span>
       </Button>
 
       {item?.showChildren &&

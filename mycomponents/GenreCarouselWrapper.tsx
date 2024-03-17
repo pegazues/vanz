@@ -1,8 +1,13 @@
 'use client'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from '@tanstack/react-query'
 import GenreCarousel from './GenreCarousel'
+import ContinueWatchingCarousel from './ContinueWatchingCarousel'
+import { queryClient } from '@/lib/helper'
 
-const queryClient = new QueryClient()
 export default function GenreCarouselWrapper({
   language,
 }: {
@@ -39,6 +44,7 @@ export default function GenreCarouselWrapper({
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ContinueWatchingCarousel language={language} />
       {movieGenres.map((genre, index) => (
         <GenreCarousel
           key={'movie' + genre}

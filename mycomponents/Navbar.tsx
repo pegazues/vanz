@@ -18,6 +18,7 @@ interface linkProps {
 
 const links: linkProps[] = [
   { name: 'Home', href: '/home', generalAccess: true },
+  { name: 'List', href: '/home/list', generalAccess: true },
   { name: 'Admin', href: '/admin', generalAccess: false },
 ]
 
@@ -30,7 +31,7 @@ function Navbar({
 
   return (
     <SessionProvider>
-      <div className="w-full max-w-7xl mx-auto items-center justify-between px-5 sm:px-6 py-5 lg:px-8 flex">
+      <div className="block sm:flex w-full max-w-7xl mx-auto items-center justify-between px-5 sm:px-6 py-5 lg:px-8">
         <div className="flex items-center">
           <Link href="/home" className="w-32">
             <Image src={Logo} alt="Netflix logo" priority />
@@ -66,7 +67,7 @@ function Navbar({
           </ul>
         </div>
 
-        <div className="flex items-center gap-x-8">
+        <div className="mt-8 sm:mt-0 flex items-center gap-x-8">
           {(user?.role === 'admin' ||
             (user?.role === 'user' && user?.status === 'accepted')) && (
             <SearchItem />
