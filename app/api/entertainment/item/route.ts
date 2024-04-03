@@ -30,10 +30,10 @@ export async function GET(request: Request) {
     const graphEndpoint = `/v1.0/me/drives/${drive_id}/items/${onedrive_item_id}`
 
     const requestUrl = new URL(graphEndpoint, graphDomain)
-    requestUrl.searchParams.append('$top', '999')
-    if (select?.trim()) {
-      requestUrl.searchParams.append('$select', select)
-    }
+    // requestUrl.searchParams.append('$top', '999')
+    // if (select?.trim()) {
+    //   requestUrl.searchParams.append('$select', select)
+    // }
     // childrenUrl.searchParams.append('$select', 'id,name')
 
     const graphResponse = await fetch(requestUrl.toString(), {
@@ -44,6 +44,8 @@ export async function GET(request: Request) {
     })
 
     const graphData = await graphResponse.json()
+    // console.log(requestUrl.toString())
+    console.log('graphResponse', graphData)
 
     return NextResponse.json(
       { status: 'success', value: graphData },
