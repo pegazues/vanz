@@ -398,6 +398,17 @@ export type User = {
   language: string
 }
 
+export type NotFound = {
+  title: string
+  folder: {
+    folder_name: string
+  },
+  account: {
+    name: string
+    email: string
+  }
+}
+
 export const getUsers = async (): Promise<User[]> => {
   const response = await fetch('/api/user', { method: 'POST' })
   const data = await response.json()
@@ -405,25 +416,14 @@ export const getUsers = async (): Promise<User[]> => {
 
   return [
     ...data.data,
-    {
-      name: 'John Doe',
-      email: 'abv',
-      status: 'accepted',
-      language: 'en',
-    },
-    {
-      name: 'Jane Doe',
-      email: 'xyz',
-      status: 'rejected',
-      language: 'it',
-    },
-    {
-      name: 'John Doe',
-      email: 'abv',
-      status: 'accepted',
-      language: 'en',
-    },
   ]
+}
+
+export const getNotFound = async (): Promise<NotFound[]> => {
+  const response = await fetch('/api/notfound', { method: 'GET'})
+  const data = await response.json()
+
+  return data.data
 }
 
 export const getMovieStats = async (): Promise<

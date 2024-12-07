@@ -109,6 +109,7 @@ export function DataTable<TData, TValue>({
           onClick={() => {
             table.previousPage()
           }}
+          className='select-none'
           disabled={!table.getCanPreviousPage()}
         >
           Previous
@@ -119,6 +120,7 @@ export function DataTable<TData, TValue>({
           onClick={() => {
             table.nextPage()
           }}
+          className='select-none'
           disabled={!table.getCanNextPage()}
         >
           Next

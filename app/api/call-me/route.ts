@@ -5,6 +5,7 @@ import {
 } from '@/lib/utils'
 import ContinueWatching from '@/models/continueWatching.model'
 import EntertainmentItem from '@/models/entertainmentItem.model'
+import NotFound from '@/models/notfound.model'
 import chalk from 'chalk'
 import { NextResponse } from 'next/server'
 
@@ -15,6 +16,7 @@ export async function POST() {
     console.log(chalk.blue('Removing everything...'))
     await EntertainmentItem.deleteMany()
     await ContinueWatching.deleteMany()
+    await NotFound.deleteMany()
 
     console.log(chalk.blue('Adding to DB...'))
     const addToDB = await fetch(

@@ -4,6 +4,7 @@ import { handleError } from '@/utils/errorHandler'
 import { NextResponse } from 'next/server'
 import chalk from 'chalk'
 import { LANGUAGES, TMDB_DOMAIN, TMDB_IMAGE_DOMAIN } from '@/lib/utils'
+import NotFound from '@/models/notfound.model'
 export const dynamic = 'force-dynamic'
 
 export async function POST(req: Request) {
@@ -106,8 +107,14 @@ async function updateDetails(
       console.log(
         chalk.redBright(
           `Cannot find: Original Title: ${item.title}, Modified Title: ${title}`,
-        ),
+        )
       )
+
+      await NotFound.create({
+        title: item.title,
+        account: item.account,
+        folder: item.parent_folder
+      })
     } else {
       const bestResultId = results.results[0].id
       const moreMovieDetailsUrl = `${TMDB_DOMAIN}/${media_type}/${bestResultId}`

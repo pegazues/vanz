@@ -24,6 +24,10 @@ const NAVIGATION_ITEMS = [
     link: '/admin/users',
   },
   {
+    title: 'Not Found',
+    link: '/admin/notfound'
+  },
+  {
     title: 'Home',
     link: '/home',
   },
@@ -31,6 +35,7 @@ const NAVIGATION_ITEMS = [
 
 export default function AdminNavigation() {
   const pathname = usePathname()
+  console.log(pathname)
 
   const isPathActive = (path: string): boolean => {
     return pathname?.includes(path) as boolean
@@ -54,7 +59,7 @@ export default function AdminNavigation() {
                 <NavigationItem
                   link={item.link}
                   title={item.title}
-                  isActive={isPathActive(item.title.toLowerCase())}
+                  isActive={isPathActive(item.link.toLowerCase())}
                 />
               </li>
             )
