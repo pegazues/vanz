@@ -2,6 +2,7 @@ import connectDB from "@/lib/mongoose";
 import NotFound from "@/models/notfound.model";
 import { handleError } from "@/utils/errorHandler";
 import { NextRequest, NextResponse } from "next/server";
+export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest){
     try {
@@ -15,5 +16,5 @@ export async function GET(request: NextRequest){
         })
     } catch (error) {
         return handleError(error)
-    }
+    }
 }
